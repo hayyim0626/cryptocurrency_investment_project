@@ -1,0 +1,270 @@
+@mixin optionBtn {
+  width: 50%;
+  background-image: linear-gradient(to bottom left, #344675, #263148, #344675);
+  line-height: 40px;
+  text-align: center;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.Content {
+  width: 590px;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  margin-right: 15px;
+  margin-left: 120px;
+  padding: 30px 45px 30px 45px;
+  .contentHeader {
+    display: flex;
+    .bestInterestImg {
+      width: 45px;
+      height: 55px;
+    }
+    .titleAndExplanation {
+      margin-left: 10px;
+      .bestInterestTitle {
+        font-size: 22px;
+        font-weight: 600;
+        color: rgb(9, 0, 108);
+      }
+      .bestInterestExplanation {
+        margin-top: 3px;
+        margin-bottom: 10px;
+        font-size: 13.5px;
+      }
+    }
+  }
+  .chartBtn {
+    text-align: center;
+    cursor: pointer;
+  }
+  .chart {
+    width: 483px;
+    height: 230px;
+    margin-top: 15px;
+    border: 1px solid black;
+    display: none;
+    &.isClicked {
+      display: block;
+    }
+  }
+  .descriptionAndBtn {
+    display: flex;
+  }
+  
+  .descriptionBox {
+    width: 483px;
+    padding: 20px 30px 15px 30px;
+    background-color: rgba(92, 109, 232, 0.06);
+    margin-top: 20px;
+    border-radius: 0.2857rem;
+    .descriptionList {
+      display: flex;
+      .descriptionTitleAndText {
+        width: 95%;
+        display: flex;
+        justify-content: space-between;
+        .descriptionTitle {
+          color: #061d64;
+          font-size: 15px;
+          font-weight: bold;
+          margin-bottom: 15px;
+        }
+        .descriptionText {
+          color: #061d64;
+          line-height: 15px;
+          font-size: 13px;
+          font-weight: bold;
+          padding-top: 5px;
+        }
+      }
+      .descriptionIcon {
+        width: 20px;
+        height: 22px;
+        margin-left: 15px;
+      }
+    }
+    .descriptionLine {
+      border-bottom: 1px solid #adb5bd;
+    }
+    .detailDescriptionBtn {
+      text-align: center;
+      margin-top: 5px;
+      cursor: pointer;
+    }
+    .detailDescription {
+      display: none;
+      margin-top: 15px;
+      padding-bottom: 25px;
+      a {
+        color: #007aff;
+      }
+      &.isClicked {
+        display: block;
+      }
+    }
+  }
+
+  .downArrowIcon {
+    display: block;
+    width: 15px;
+    padding-top: 15px;
+    margin: 0 auto;
+  }
+
+  .investInputBox {
+    width: 483px;
+    height: 55px;
+    margin-top: 15px;
+    border-radius: 0px 0.4285rem 0.4285rem 0px;
+    display: flex;
+    .currencyListBtn {
+      width: 35%;
+      border-top-left-radius: 0.2857rem;
+      border-bottom-left-radius: 0.2857rem;
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+      text-align: center;
+      line-height: 55px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      background-image: linear-gradient(
+        to bottom left,
+        #002473,
+        #2541b2,
+        #002473
+      );
+    }
+    .investInput {
+      width: 65%;
+      border: 1px solid rgba(45, 53, 163, 0.7);
+      border-top-right-radius: 0.2857rem;
+      border-bottom-right-radius: 0.2857rem;
+      display: flex;
+      justify-content: space-between;
+      .investPrice {
+        padding-left: 15px;
+        font-size: 17px;
+      }
+      .maxText {
+        line-height: 55px;
+        padding-right: 15px;
+        color: #2541b3;
+        font-weight: bolder;
+      }
+    }
+  }
+
+  .currencyDropdown {
+    display: none;
+    width: 169px;
+    height: 100px;
+    background-color: #03103bf2;
+    margin-top: 2px;
+    padding: 8px 0;
+    z-index: 1;
+    position: absolute;
+    border-radius: 0.1428rem;
+    &.isClicked {
+      display: block;
+    }
+    .currencyItem {
+      padding: 0.6rem 24px;
+      margin-top: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      &:hover {
+        background-color: #9ea1b1f2;
+      }
+    }
+  }
+
+  .investOption {
+    margin-top: 15px;
+    .investOptionText {
+      color: #061d64;
+      font-weight: bold;
+    }
+    .optionBtns {
+      width: 483px;
+      height: 40px;
+      display: flex;
+      margin-top: 5px;
+      .coldStakingBtn {
+        border-top-left-radius: 0.2857rem;
+        border-bottom-left-radius: 0.2857rem;
+        @include optionBtn;
+      }
+      .freeDepositBtn {
+        border-top-right-radius: 0.2857rem;
+        border-bottom-right-radius: 0.2857rem;
+        @include optionBtn;
+      }
+    }
+    .interestBox {
+      margin-top: 5px;
+      width: 483px;
+      height: 105px;
+      background-color: rgba(92, 109, 232, 0.06);
+      border-radius: 0.2857rem;
+      display: flex;
+      padding: 15px;
+      justify-content: space-between;
+      .interestInfo {
+        .interestImgText {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          .interestImg {
+            width: 33px;
+          }
+          .interestText {
+            color: black;
+            font-size: 12px;
+            font-weight: lighter;
+            margin-left: 10px;
+            margin-top: 5px;
+          }
+        }
+        .interestPercentage {
+          width: 141px;
+          height: 34px;
+          border-radius: 0.2857rem;
+          border: 1px solid black;
+          font-size: 15px;
+          padding: 7px 4px;
+          text-align: center;
+          font-weight: bold;
+          .nownArrow {
+            width: 13px;
+            margin: 0 5px;
+          }
+        }
+      }
+    }
+  }
+
+  .investBtn {
+    margin-top: 50px;
+    width: 483px;
+    height: 40px;
+    background-image: linear-gradient(
+      to bottom left,
+      #002473,
+      #2541b2,
+      #002473
+    );
+    border-radius: 0.2857rem;
+    text-align: center;
+    font-size: 15px;
+    font-weight: bold;
+    color: #fff;
+    line-height: 40px;
+    cursor: pointer;
+    &:hover {
+    }
+  }
+}
