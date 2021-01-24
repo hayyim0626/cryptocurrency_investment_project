@@ -1,0 +1,123 @@
+.Status {
+  width: 590px;
+  height: 1024px;
+  background-color: #fff;
+  border-radius: 0.5rem;
+  margin-right: 15px;
+  margin-left: 15px;
+  padding: 30px 45px 30px 45px;
+
+  .statusHeader {
+    display: flex;
+    justify-content: space-between;
+    .statusText {
+      font-size: 22px;
+      font-weight: bold;
+      color: #09006c;
+      border-bottom: 3px solid #09006c;
+    }
+    .statusBox {
+      width: 160px;
+      height: 40px;
+      border: 1px solid gray;
+      border-radius: 0.4285rem;
+      cursor: pointer;
+      &:hover {
+        border: 1px solid #09006c;
+      }
+    }
+  }
+
+  .statusDropdown {
+    width: 160px;
+    height: 120px;
+    margin-top: 5px;
+    margin-left: 340px;
+    background-color: #fff;
+    border: 1px solid black;
+    position: absolute;
+    border-radius: 4px;
+    z-index: 1;
+    padding: 5px 0;
+    display: none;
+    .statusList {
+      height: 34px;
+      line-height: 34px;
+      padding-left: 20px;
+      cursor: pointer;
+      &:hover {
+        background-color: #dcdcdc;
+      }
+    }
+    &.isClicked {
+      display: block;
+    }
+  }
+
+  .currencyBox {
+    margin-top: 5px;
+    display: flex;
+
+    .currencyItem {
+      width: 33.3%;
+      height: 30px;
+      text-align: center;
+      padding: 5px 15px;
+      color: #fff;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #09006c;
+      border-radius: 4px;
+      &:hover {
+        background-color: black;
+      }
+    }
+  }
+  .currencyTable {
+    height: 60px;
+    padding: 10px 5px; 
+    padding-right: 30px;
+    border-bottom: 1px solid gray;
+    display: flex;
+    .applyArrow {
+      width: 5%;
+      margin-top: 10px;
+      // line-height: 60px;
+    }
+    .applyState {
+      width: 95%;
+      .applyInfo {
+        display: flex;
+        justify-content: space-between;
+        .productName {
+          font-size: 12px;
+          color: gray;
+          font-weight: bold;
+        }
+        .applyDate {
+          font-size: 10px;
+          color: gray;
+        }
+      }
+      .applyDetail {
+        display: flex;
+        justify-content: space-between;
+        .applyAmount {
+          font-size: 17px;
+          color: gray;
+          font-weight: bold;
+        }
+        .interestRate {
+          padding-top: 3px;
+          color: gray;
+        }
+        .applyResult {
+          font-size: 7px;
+          font-weight: bold;
+          padding-top: 7px;
+          color: blue;
+        }
+      }
+    }
+  }
+}
