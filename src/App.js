@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import EthImg from './Images/ehtereum_logo.svg'
+import DaiImg from './Images/dai.png'
 import Status from "./Pages/Status/Status";
 import Apply from "./Pages/Apply/Apply";
 import axios from "axios";
@@ -6,30 +8,52 @@ import "./App.scss";
 
 function App() {
   const [clickDropdown, setClickDropdown] = useState(false);
-  const [clickStatusList, setClickStatusList] = useState(false);
-  const [currentCurrency, setCurrentCurrency] = useState("ETH");
-  const CURRENCY_ITEM = ["ETH", "DAI"];
+  const [clickStatusDropdown, setClickStatusDropdown] = useState(false);
+  const [clickedCurrency, setClickedCurrency] = useState("ETH");
+  const [currencyData, setCurrnecyData] = useState([]);
+  const [applicationAmount, setApplicationAmount] = useState();
   const apiKey = "df57938d5b5cd1aac46a7954592ad50a9581944278a17405183f64f3145d";
-  const currencyApi =
-    `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${currentCurrency}&amount=10000&api-key=${apiKey}`;
+  const currencyApi = `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${clickedCurrency}&amount=10000&api-key=${apiKey}`;
+  const CURRENCY_INFO = [
+    {
+      id: "ETH",
+      period: "1",
+      img: EthImg,
+      interestRate: currencyData.interestRate,
+      investmentLimit: "3",
+      applicationPeriod: "30",
+    },
+    {
+      id: "DAI",
+      period: "2",
+      interestRate: currencyData.interestRate,
+      img: DaiImg,
+      investmentLimit: "2000",
+      applicationPeriod: "40",
+    },
+  ];
 
   const handleDropdown = () => {
     setClickDropdown(!clickDropdown);
   };
 
-  const handleStatusList = () => {
-    setClickStatusList(!clickStatusList);
+  const handleStatusDropdown = () => {
+    setClickStatusDropdown(!clickStatusDropdown);
   };
 
-  const closeModal = () => {
+  const closeDropdown = () => {
     if (clickDropdown) setClickDropdown(false);
-    if (clickStatusList) setClickStatusList(false);
+    if (clickStatusDropdown) setClickStatusDropdown(false);
   };
 
   const getApiData = async () => {
     try {
       const response = await axios.get(currencyApi);
-      console.log(response);
+      const apiCurrencyData = {
+        id: response.data.token.name,
+        interestRate: Number(response.data.rates.Aave.lend.rate).toFixed(2),
+      };
+      setCurrnecyData(apiCurrencyData);
     } catch (error) {
       console.log(error);
     }
@@ -42,22 +66,23 @@ function App() {
   useEffect(() => {
     getApiData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentCurrency]);
+  }, [clickedCurrency]);
 
   return (
-    <div className="App" onClick={() => closeModal()}>
+    <div className="App" onClick={() => closeDropdown()}>
       <div className="interestText">최고이자율상품</div>
       <div className="contentAndStatus">
         <Apply
           clickDropdown={clickDropdown}
           handleDropdown={handleDropdown}
-          CURRENCY_ITEM={CURRENCY_ITEM}
-          currentCurrency={currentCurrency}
-          setCurrentCurrency={setCurrentCurrency}
+          clickedCurrency={clickedCurrency}
+          setClickedCurrency={setClickedCurrency}
+          currencyData={currencyData}
+          CURRENCY_INFO={CURRENCY_INFO}
         />
         <Status
-          clickStatusList={clickStatusList}
-          handleStatusList={handleStatusList}
+          clickStatusDropdown={clickStatusDropdown}
+          handleStatusDropdown={handleStatusDropdown}
         />
       </div>
     </div>

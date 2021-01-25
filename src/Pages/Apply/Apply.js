@@ -14,12 +14,16 @@ import "./Apply.scss";
 export default function Apply({
   handleDropdown,
   clickDropdown,
-  CURRENCY_ITEM,
-  currentCurrency,
-  setCurrentCurrency,
+  clickedCurrency,
+  setClickedCurrency,
+  currencyData,
+  CURRENCY_INFO,
 }) {
   const [chartClicked, setChartClicked] = useState(true);
   const [detailDescription, setDetailDescription] = useState(false);
+  const clickedCurrencyData = CURRENCY_INFO.filter(
+    (el) => el.id === clickedCurrency
+  )[0];
 
   const handleChart = () => {
     setChartClicked(!chartClicked);
@@ -29,8 +33,8 @@ export default function Apply({
     setDetailDescription(!detailDescription);
   };
 
-  const handleCurrency = (value) => {
-    setCurrentCurrency(value);
+  const handleCurrency = (currencyId) => {
+    setClickedCurrency(currencyId);
   };
 
   return (
@@ -56,16 +60,23 @@ export default function Apply({
       </article>
       <article className="descriptionBox">
         <div className="descriptionList">
-          <div className="descriptionTitleAndText">
-            <h4 className="descriptionTitle">기간</h4>
-            <span className="descriptionText">1개월 락업</span>
+          <div className="descriptionTitleAndData">
+            <h4 className="descriptionType">기간</h4>
+            <span className="currencyData">
+              {clickedCurrencyData.period}개월 락업
+            </span>
           </div>
           <img src={bigLockup} alt="lockup icon" className="descriptionIcon" />
         </div>
         <div className="descriptionList">
-          <div className="descriptionTitleAndText">
-            <h4 className="descriptionTitle">이자</h4>
-            <span className="descriptionText">32.19% 변동금리</span>
+          <div className="descriptionTitleAndData">
+            <h4 className="descriptionType">이자</h4>
+            <span className="currencyData">
+              <span className="interestRate">
+                {clickedCurrencyData.interestRate}
+              </span>
+              % 변동금리
+            </span>
           </div>
           <img
             src={bigVariableInterest}
@@ -74,9 +85,18 @@ export default function Apply({
           />
         </div>
         <div className="descriptionList">
-          <div className="descriptionTitleAndText">
-            <h4 className="descriptionTitle">투자한도</h4>
-            <span className="descriptionText">$ 3,000</span>
+          <div className="descriptionTitleAndData">
+            <h4 className="descriptionType">투자한도</h4>
+            <div className="investmentLimit">
+              <img
+                src={clickedCurrencyData.img}
+                alt="crypto img"
+                className="cryptoImg"
+              />
+              <span className="currencyData">
+                {clickedCurrencyData.investmentLimit}
+              </span>
+            </div>
           </div>
           <img
             src={bigRequestLimit}
@@ -85,9 +105,11 @@ export default function Apply({
           />
         </div>
         <div className="descriptionList">
-          <div className="descriptionTitleAndText">
-            <h4 className="descriptionTitle">남은 신청기간</h4>
-            <span className="descriptionText">D-30</span>
+          <div className="descriptionTitleAndData">
+            <h4 className="descriptionType">남은 신청기간</h4>
+            <span className="currencyData">
+              D-{clickedCurrencyData.applicationPeriod}
+            </span>
           </div>
           <img
             src={bigRequestDue}
@@ -117,10 +139,14 @@ export default function Apply({
       <img src={downArrow} alt="dowm Arrow" className="downArrowIcon" />
       <article className="investInputBox">
         <div className="currencyListBtn" onClick={() => handleDropdown()}>
-          {currentCurrency}
+          {clickedCurrency}
         </div>
         <div className="investInput">
-          <input type="number" placeholder="Amount" className="investPrice" />
+          <input
+            type="number"
+            placeholder="Amount"
+            className="investPrice"
+          />
           <div className="maxText">MAX</div>
         </div>
       </article>
@@ -129,28 +155,17 @@ export default function Apply({
           clickDropdown ? "currencyDropdown isClicked" : "currencyDropdown"
         }
       >
-        {/* {CURRENCY_ITEM.map((el, idx) => (
-          <div
-            className={
-              el === currentCurrency
-                ? "currencyItem currentCurrency"
-                : "currencyItem"
-            }
-            onClick={() => handleCurrency(el)}
-            key={idx}
-          >
-            {el}
-          </div>
-        ))} */}
-        {CURRENCY_ITEM.filter((el) => currentCurrency !== el).map((el, idx) => (
-          <div
-            className="currencyItem"
-            onClick={() => handleCurrency(el)}
-            key={idx}
-          >
-            {el}
-          </div>
-        ))}
+        {CURRENCY_INFO.filter((el) => clickedCurrency !== el.id).map(
+          (el, idx) => (
+            <div
+              className="currencyItem"
+              onClick={() => handleCurrency(el.id)}
+              key={idx}
+            >
+              {el.id}
+            </div>
+          )
+        )}
       </span>
       <article className="investOption">
         <div className="investOptionText">
@@ -192,9 +207,9 @@ export default function Apply({
               </div>
             </div>
             <div className="interestPercentage">
-              0
+              0%
               <img src={nownArrow} alt="nown arrow img" className="nownArrow" />
-              0
+              {currencyData.interestRate}%
             </div>
           </div>
         </div>

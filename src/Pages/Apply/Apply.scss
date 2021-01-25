@@ -61,22 +61,32 @@
     border-radius: 0.2857rem;
     .descriptionList {
       display: flex;
-      .descriptionTitleAndText {
+      .descriptionTitleAndData {
         width: 95%;
         display: flex;
         justify-content: space-between;
-        .descriptionTitle {
+        .descriptionType {
           color: #061d64;
           font-size: 15px;
           font-weight: bold;
           margin-bottom: 15px;
         }
-        .descriptionText {
+        .cryptoImg {
+          width: 15px;
+          height: 15px;
+        }
+        .currencyData {
           color: #061d64;
           line-height: 15px;
           font-size: 13px;
           font-weight: bold;
           padding-top: 5px;
+          margin-left: 10px;
+          .interestRate {
+            color: blue;
+            font-size: 20px;
+            font-weight: bold;
+          }
         }
       }
       .descriptionIcon {
@@ -123,8 +133,6 @@
       width: 35%;
       border-top-left-radius: 0.2857rem;
       border-bottom-left-radius: 0.2857rem;
-      border-top-right-radius: 0px;
-      border-bottom-right-radius: 0px;
       text-align: center;
       line-height: 55px;
       color: white;
@@ -234,7 +242,7 @@
           border-radius: 0.2857rem;
           border: 1px solid black;
           font-size: 15px;
-          padding: 7px 4px;
+          padding: 6px 4px;
           text-align: center;
           font-weight: bold;
           .nownArrow {
