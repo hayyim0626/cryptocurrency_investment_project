@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Status.scss";
 
-export default function Status({ clickStatusList, handleStatusList }) {
-  const STATUS_CASE = ["전체", "승인", "완료"];
+export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
+  const STATUS_CASE = ["전체", "승인대기", "완료"];
   const CURRENCY_ITEM = ["All", "ETH", "DAI"];
   const [currentStatus, setCurrentStatus] = useState("전체");
   const date = new Date();
@@ -26,14 +26,14 @@ export default function Status({ clickStatusList, handleStatusList }) {
     <div className="Status">
       <header className="statusHeader">
         <div className="statusText">Status</div>
-        <div className="statusBox" onClick={() => handleStatusList()}>
+        <div className="statusBox" onClick={() => handleStatusDropdown()}>
           <div className="currentStatus">{currentStatus}</div>
           <div>∨</div>
         </div>
       </header>
       <div
         className={
-          clickStatusList ? "statusDropdown isClicked" : "statusDropdown"
+          clickStatusDropdown ? "statusDropdown isClicked" : "statusDropdown"
         }
       >
         {STATUS_CASE.map((el) => {
