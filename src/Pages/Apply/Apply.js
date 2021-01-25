@@ -9,12 +9,17 @@ import increase from "../../Images/increase.svg";
 import money from "../../Images/money.svg";
 import year from "../../Images/year.svg";
 import nownArrow from "../../Images/noun_Arrow_2.svg";
-import "./Content.scss";
+import "./Apply.scss";
 
-export default function Content({ handleDropdown, clickDropdown }) {
+export default function Apply({
+  handleDropdown,
+  clickDropdown,
+  CURRENCY_ITEM,
+  currentCurrency,
+  setCurrentCurrency,
+}) {
   const [chartClicked, setChartClicked] = useState(true);
   const [detailDescription, setDetailDescription] = useState(false);
-  const CRYPTOCURRENCY = ["ETH", "DAI"];
 
   const handleChart = () => {
     setChartClicked(!chartClicked);
@@ -24,13 +29,9 @@ export default function Content({ handleDropdown, clickDropdown }) {
     setDetailDescription(!detailDescription);
   };
 
-  // const handleDropdown = () => {
-  //   setDropdown(!dropdown);
-  // };
-
-  // const closeDropdown = () => {
-  //   if (dropdown) return setDropdown(false);
-  // };
+  const handleCurrency = (value) => {
+    setCurrentCurrency(value);
+  };
 
   return (
     <section className="Content">
@@ -116,7 +117,7 @@ export default function Content({ handleDropdown, clickDropdown }) {
       <img src={downArrow} alt="dowm Arrow" className="downArrowIcon" />
       <article className="investInputBox">
         <div className="currencyListBtn" onClick={() => handleDropdown()}>
-          여기가 버튼
+          {currentCurrency}
         </div>
         <div className="investInput">
           <input type="number" placeholder="Amount" className="investPrice" />
@@ -128,7 +129,28 @@ export default function Content({ handleDropdown, clickDropdown }) {
           clickDropdown ? "currencyDropdown isClicked" : "currencyDropdown"
         }
       >
-        <div className="currencyItem">hello</div>
+        {/* {CURRENCY_ITEM.map((el, idx) => (
+          <div
+            className={
+              el === currentCurrency
+                ? "currencyItem currentCurrency"
+                : "currencyItem"
+            }
+            onClick={() => handleCurrency(el)}
+            key={idx}
+          >
+            {el}
+          </div>
+        ))} */}
+        {CURRENCY_ITEM.filter((el) => currentCurrency !== el).map((el, idx) => (
+          <div
+            className="currencyItem"
+            onClick={() => handleCurrency(el)}
+            key={idx}
+          >
+            {el}
+          </div>
+        ))}
       </span>
       <article className="investOption">
         <div className="investOptionText">

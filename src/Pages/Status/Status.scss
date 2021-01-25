@@ -17,20 +17,26 @@
       border-bottom: 3px solid #09006c;
     }
     .statusBox {
+      display: flex;
+      justify-content: space-between;
       width: 160px;
       height: 40px;
       border: 1px solid gray;
       border-radius: 0.4285rem;
+      padding: 10px 20px;
       cursor: pointer;
       &:hover {
         border: 1px solid #09006c;
+      }
+      .currentState {
+        font-size: 15px;
+        font-weight: bold;
       }
     }
   }
 
   .statusDropdown {
     width: 160px;
-    height: 120px;
     margin-top: 5px;
     margin-left: 340px;
     background-color: #fff;
@@ -47,6 +53,11 @@
       cursor: pointer;
       &:hover {
         background-color: #dcdcdc;
+      }
+      &.currentStatus {
+        background-color: #1d8cf8;
+        color: #fff;
+        font-weight: bold;
       }
     }
     &.isClicked {
@@ -75,14 +86,13 @@
   }
   .currencyTable {
     height: 60px;
-    padding: 10px 5px; 
+    padding: 10px 5px;
     padding-right: 30px;
     border-bottom: 1px solid gray;
     display: flex;
     .applyArrow {
       width: 5%;
       margin-top: 10px;
-      // line-height: 60px;
     }
     .applyState {
       width: 95%;
@@ -111,8 +121,8 @@
           padding-top: 3px;
           color: gray;
         }
-        .applyResult {
-          font-size: 7px;
+        .applyStatus {
+          font-size: 10px;
           font-weight: bold;
           padding-top: 7px;
           color: blue;

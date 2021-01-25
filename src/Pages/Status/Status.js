@@ -4,7 +4,9 @@ import "./Status.scss";
 export default function Status({ clickStatusList, handleStatusList }) {
   const STATUS_CASE = ["전체", "승인", "완료"];
   const CURRENCY_ITEM = ["All", "ETH", "DAI"];
+  const [currentStatus, setCurrentStatus] = useState("전체");
   const date = new Date();
+
   const getFormatDate = (date) => {
     let year = date.getFullYear();
     let month = 1 + date.getMonth();
@@ -13,13 +15,21 @@ export default function Status({ clickStatusList, handleStatusList }) {
     day = day >= 10 ? day : "0" + day;
     return year + "-" + month + "-" + day;
   };
+
   const applyDate = getFormatDate(date);
+
+  const filterStatus = (status) => {
+    setCurrentStatus(status);
+  };
 
   return (
     <div className="Status">
       <header className="statusHeader">
         <div className="statusText">Status</div>
-        <div className="statusBox" onClick={() => handleStatusList()}></div>
+        <div className="statusBox" onClick={() => handleStatusList()}>
+          <div className="currentStatus">{currentStatus}</div>
+          <div>∨</div>
+        </div>
       </header>
       <div
         className={
@@ -27,7 +37,16 @@ export default function Status({ clickStatusList, handleStatusList }) {
         }
       >
         {STATUS_CASE.map((el) => {
-          return <div className="statusList">{el}</div>;
+          return (
+            <div
+              className={
+                currentStatus === el ? "statusList currentStatus" : "statusList"
+              }
+              onClick={() => filterStatus(el)}
+            >
+              {el}
+            </div>
+          );
         })}
       </div>
       <div className="currencyBox">
@@ -45,7 +64,7 @@ export default function Status({ clickStatusList, handleStatusList }) {
           <div className="applyDetail">
             <div className="applyAmount">1632.12345612</div>
             <div className="interestRate">4.01230012 Earned (4.00%)</div>
-            <div className="applyResult">승인</div>
+            <div className="applyStatus">승인대기</div>
           </div>
         </div>
       </article>
