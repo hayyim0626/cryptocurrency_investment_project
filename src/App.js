@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import EthImg from './Images/ehtereum_logo.svg'
-import DaiImg from './Images/dai.png'
+import EthImg from "./Images/ehtereum_logo.svg";
+import DaiImg from "./Images/dai.png";
 import Status from "./Pages/Status/Status";
 import Apply from "./Pages/Apply/Apply";
 import axios from "axios";
@@ -11,25 +11,23 @@ function App() {
   const [clickStatusDropdown, setClickStatusDropdown] = useState(false);
   const [clickedCurrency, setClickedCurrency] = useState("ETH");
   const [currencyData, setCurrnecyData] = useState([]);
-  const [applicationAmount, setApplicationAmount] = useState();
-  const apiKey = "df57938d5b5cd1aac46a7954592ad50a9581944278a17405183f64f3145d";
-  const currencyApi = `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${clickedCurrency}&amount=10000&api-key=${apiKey}`;
+  const currencyApi = `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${clickedCurrency}&amount=10000&api-key=62be5285721a9c9c5ad2ac05a57650d93dde5060ddb06816f1f70e27fa67`;
   const CURRENCY_INFO = [
     {
       id: "ETH",
-      period: "1",
+      period: 1,
       img: EthImg,
       interestRate: currencyData.interestRate,
-      investmentLimit: "3",
-      applicationPeriod: "30",
+      investmentLimit: 3,
+      applicationPeriod: 30,
     },
     {
       id: "DAI",
-      period: "2",
+      period: 2,
       interestRate: currencyData.interestRate,
       img: DaiImg,
-      investmentLimit: "2000",
-      applicationPeriod: "40",
+      investmentLimit: 8,
+      applicationPeriod: 40,
     },
   ];
 
@@ -59,25 +57,24 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    getApiData();
-  }, []);
+  // useEffect(() => {
+  //   getApiData();
+  // }, []);
 
-  useEffect(() => {
-    getApiData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [clickedCurrency]);
+  // useEffect(() => {
+  //   getApiData();
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [clickedCurrency]);
 
   return (
     <div className="App" onClick={() => closeDropdown()}>
       <div className="interestText">최고이자율상품</div>
       <div className="contentAndStatus">
         <Apply
-          clickDropdown={clickDropdown}
           handleDropdown={handleDropdown}
+          clickDropdown={clickDropdown}
           clickedCurrency={clickedCurrency}
           setClickedCurrency={setClickedCurrency}
-          currencyData={currencyData}
           CURRENCY_INFO={CURRENCY_INFO}
         />
         <Status
