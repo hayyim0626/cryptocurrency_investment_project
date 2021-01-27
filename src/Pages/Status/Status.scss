@@ -84,6 +84,13 @@
       }
     }
   }
+  .noData {
+    height: 70px;
+    line-height: 70px;
+    text-align: center;
+    color: gray;
+    font-weight: bold;
+  }
   .currencyTable {
     height: 60px;
     padding: 10px 5px;
@@ -101,7 +108,7 @@
         justify-content: space-between;
         .productName {
           font-size: 12px;
-          color: gray;
+          color: #09006c;
           font-weight: bold;
         }
         .applyDate {
@@ -112,10 +119,19 @@
       .applyDetail {
         display: flex;
         justify-content: space-between;
-        .applyAmount {
-          font-size: 17px;
-          color: gray;
-          font-weight: bold;
+        .applyCurrency {
+          display: flex;
+          align-items: center;
+          width: 20%;
+          .applyAmount {
+            font-size: 17px;
+            font-weight: bold;
+          }
+          .applyCurrencyId {
+            margin-left: 5px;
+            color: gray;
+            font-weight: bold;
+          }
         }
         .interestRate {
           padding-top: 3px;

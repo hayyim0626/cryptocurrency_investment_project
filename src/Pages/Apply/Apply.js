@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import bestInterestIcon from "../../Images/best_interest_icon.svg";
 import bigLockup from "../../Images/big_lockup.svg";
 import bigRequestDue from "../../Images/big_reqeust_due.svg";
@@ -9,6 +9,8 @@ import increase from "../../Images/increase.svg";
 import money from "../../Images/money.svg";
 import year from "../../Images/year.svg";
 import nownArrow from "../../Images/noun_Arrow_2.svg";
+import { useDispatch } from "react-redux";
+import { addInvest } from "../../Store/Actions";
 import "./Apply.scss";
 
 export default function Apply({
@@ -16,14 +18,51 @@ export default function Apply({
   clickDropdown,
   clickedCurrency,
   setClickedCurrency,
-  currencyData,
   CURRENCY_INFO,
 }) {
+  const dispatch = useDispatch();
   const [chartClicked, setChartClicked] = useState(true);
   const [detailDescription, setDetailDescription] = useState(false);
+  const [investPrice, setInvestPrice] = useState("");
   const clickedCurrencyData = CURRENCY_INFO.filter(
     (el) => el.id === clickedCurrency
   )[0];
+  // const dailyInterestAmount = ((investPrice * clickedCurrencyData.interestRate/100) / 365).toFixed(8);
+  // const entireInterestAmount = (dailyInterestAmount * clickedCurrencyData.period * 30).toFixed(8);
+  const dailyInterestAmount = parseFloat(((investPrice * 0.026) / 365).toFixed(8));
+  const entireInterestAmount = parseFloat((dailyInterestAmount * 2 * 30).toFixed(8));
+  const date = new Date();
+
+  const getFormatDate = (date) => {
+    let year = date.getFullYear();
+    let month = 1 + date.getMonth();
+    let day = date.getDate();
+    month = month >= 10 ? month : "0" + month;
+    day = day >= 10 ? day : "0" + day;
+    return `${year}-${month}-${day}`;
+  };
+  const applyDate = getFormatDate(date);
+
+  const investData = {
+    productName: "최고이자율상품",
+    applicationDate: applyDate,
+    interestRate: "0.26",
+    // interestRate: clickedCurrencyData.interestRate,
+    applicationRevenue: entireInterestAmount,
+    applicationCurrency: clickedCurrency,
+    applicationPrice: investPrice,
+    applicationResult: "승인대기",
+  };
+
+  const isValid = () => {
+    if (investPrice > Number(clickedCurrencyData.investmentLimit)) {
+      return `최대 ${clickedCurrencyData.investmentLimit}까지 신청할 수 있습니다`;
+    }
+  };
+
+  const handleInvestPrice = (value) => {
+    setInvestPrice(value);
+  };
 
   const handleChart = () => {
     setChartClicked(!chartClicked);
@@ -35,6 +74,31 @@ export default function Apply({
 
   const handleCurrency = (currencyId) => {
     setClickedCurrency(currencyId);
+  };
+
+  const averageInterest = () => {
+    if (dailyInterestAmount === "NaN") {
+      return "NaN";
+    }
+    if (investPrice === "" || investPrice === "0") {
+      return 0;
+    }
+    return 0.26;
+    // return clickedCurrencyData.interestRate
+  };
+
+  const addInvestData = () => {
+    if (dailyInterestAmount === "NaN" || investPrice === "0") {
+      return alert("유효한 숫자를 입력해주세요!");
+    }
+    if (investPrice > Number(clickedCurrencyData.investmentLimit)) {
+      return alert(
+        `최대 ${clickedCurrencyData.investmentLimit}까지 신청할 수 있습니다`
+      );
+    }
+    alert("신청이 완료되었습니다.");
+    dispatch(addInvest(investData));
+    setInvestPrice("");
   };
 
   return (
@@ -73,7 +137,8 @@ export default function Apply({
             <h4 className="descriptionType">이자</h4>
             <span className="currencyData">
               <span className="interestRate">
-                {clickedCurrencyData.interestRate}
+                {/* {clickedCurrencyData.interestRate} */}
+                0.26
               </span>
               % 변동금리
             </span>
@@ -143,13 +208,17 @@ export default function Apply({
         </div>
         <div className="investInput">
           <input
-            type="number"
+            type="text"
+            maxLength="10"
             placeholder="Amount"
-            className="investPrice"
+            className="inputWindow"
+            value={investPrice}
+            onChange={(e) => handleInvestPrice(e.target.value)}
           />
           <div className="maxText">MAX</div>
         </div>
       </article>
+      <div className="infoWindow">{isValid()}</div>
       <span
         className={
           clickDropdown ? "currencyDropdown isClicked" : "currencyDropdown"
@@ -185,7 +254,16 @@ export default function Apply({
                 이자금액
               </div>
             </div>
-            <div className="interestPercentage">$0</div>
+            <div className="interestPercentage">
+              <img
+                src={clickedCurrencyData.img}
+                alt="crypto Img"
+                className="cryptoImg"
+              />
+              {investPrice === "" || investPrice === "0"
+                ? "0"
+                : dailyInterestAmount}
+            </div>
           </div>
           <div className="interestInfo">
             <div className="interestImgText">
@@ -195,7 +273,16 @@ export default function Apply({
                 <br />총 이자금액
               </div>
             </div>
-            <div className="interestPercentage">$0</div>
+            <div className="interestPercentage">
+              <img
+                src={clickedCurrencyData.img}
+                alt="crypto Img"
+                className="cryptoImg"
+              />
+              {investPrice === "" || investPrice === "0"
+                ? "0"
+                : entireInterestAmount}
+            </div>
           </div>
           <div className="interestInfo">
             <div className="interestImgText">
@@ -209,12 +296,14 @@ export default function Apply({
             <div className="interestPercentage">
               0%
               <img src={nownArrow} alt="nown arrow img" className="nownArrow" />
-              {currencyData.interestRate}%
+              {averageInterest()}%
             </div>
           </div>
         </div>
       </article>
-      <div className="investBtn">투자 신청</div>
+      <div className="investBtn" onClick={addInvestData}>
+        투자 신청
+      </div>
     </section>
   );
 }

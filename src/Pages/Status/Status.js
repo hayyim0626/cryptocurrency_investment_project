@@ -1,25 +1,23 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import "./Status.scss";
 
 export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
   const STATUS_CASE = ["전체", "승인대기", "완료"];
   const CURRENCY_ITEM = ["All", "ETH", "DAI"];
   const [currentStatus, setCurrentStatus] = useState("전체");
-  const date = new Date();
-
-  const getFormatDate = (date) => {
-    let year = date.getFullYear();
-    let month = 1 + date.getMonth();
-    let day = date.getDate();
-    month = month >= 10 ? month : "0" + month;
-    day = day >= 10 ? day : "0" + day;
-    return year + "-" + month + "-" + day;
-  };
-
-  const applyDate = getFormatDate(date);
+  const investList = useSelector((store) => store.investReducer);
 
   const filterStatus = (status) => {
     setCurrentStatus(status);
+  };
+
+  const filterByCurrency = (el) => {
+    if (el === "All") {
+      return investList;
+      console.log(el)
+    }
+    investList.filter(el === investList.productName);
   };
 
   return (
@@ -51,23 +49,40 @@ export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
       </div>
       <div className="currencyBox">
         {CURRENCY_ITEM.map((el) => {
-          return <div className="currencyItem">{el}</div>;
+          return (
+            <div className="currencyItem" onClick={() => filterByCurrency(el)}>
+              {el}
+            </div>
+          );
         })}
       </div>
-      <article className="currencyTable">
-        <div className="applyArrow">＞</div>
-        <div className="applyState">
-          <div className="applyInfo">
-            <div className="productName">최고이자율상품</div>
-            <div className="applyDate">{applyDate}</div>
-          </div>
-          <div className="applyDetail">
-            <div className="applyAmount">1632.12345612</div>
-            <div className="interestRate">4.01230012 Earned (4.00%)</div>
-            <div className="applyStatus">승인대기</div>
-          </div>
-        </div>
-      </article>
+      {investList.length === 0 ? (
+        <div className="noData">No data</div>
+      ) : (
+        investList.map((el) => (
+          <article className="currencyTable">
+            <div className="applyArrow">＞</div>
+            <div className="applyState">
+              <div className="applyInfo">
+                <div className="productName">{el.productName}</div>
+                <div className="applyDate">{el.applicationDate}</div>
+              </div>
+              <div className="applyDetail">
+                <div className="applyCurrency">
+                  <div className="applyAmount">{el.applicationPrice}</div>
+                  <div className="applyCurrencyId">
+                    {el.applicationCurrency}
+                  </div>
+                </div>
+                <div className="interestRate">
+                  {el.applicationRevenue} Earned ({el.interestRate}%)
+                </div>
+                <div className="applyStatus">{el.applicationResult}</div>
+              </div>
+            </div>
+          </article>
+        ))
+      )}
     </div>
   );
 }

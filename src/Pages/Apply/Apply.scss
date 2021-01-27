@@ -8,6 +8,11 @@
   cursor: pointer;
 }
 
+@mixin cryptoImg {
+  width: 15px;
+  height: 15px;
+}
+
 .Content {
   width: 590px;
   background-color: #fff;
@@ -40,7 +45,7 @@
     cursor: pointer;
   }
   .chart {
-    width: 483px;
+    width: 500px;
     height: 230px;
     margin-top: 15px;
     border: 1px solid black;
@@ -54,7 +59,7 @@
   }
 
   .descriptionBox {
-    width: 483px;
+    width: 500px;
     padding: 20px 30px 15px 30px;
     background-color: rgba(92, 109, 232, 0.06);
     margin-top: 20px;
@@ -72,8 +77,7 @@
           margin-bottom: 15px;
         }
         .cryptoImg {
-          width: 15px;
-          height: 15px;
+          @include cryptoImg;
         }
         .currencyData {
           color: #061d64;
@@ -124,7 +128,7 @@
   }
 
   .investInputBox {
-    width: 483px;
+    width: 500px;
     height: 55px;
     margin-top: 15px;
     border-radius: 0px 0.4285rem 0.4285rem 0px;
@@ -152,7 +156,7 @@
       border-bottom-right-radius: 0.2857rem;
       display: flex;
       justify-content: space-between;
-      .investPrice {
+      .inputWindow {
         padding-left: 15px;
         font-size: 17px;
       }
@@ -163,6 +167,13 @@
         font-weight: bolder;
       }
     }
+  }
+
+  .infoWindow {
+    color: red;
+    font-size: 12px;
+    text-align: right;
+    margin-right: 20px;
   }
 
   .currencyDropdown {
@@ -196,7 +207,7 @@
       font-weight: bold;
     }
     .optionBtns {
-      width: 483px;
+      width: 500px;
       height: 40px;
       display: flex;
       margin-top: 5px;
@@ -213,7 +224,7 @@
     }
     .interestBox {
       margin-top: 5px;
-      width: 483px;
+      width: 500px;
       height: 105px;
       background-color: rgba(92, 109, 232, 0.06);
       border-radius: 0.2857rem;
@@ -237,6 +248,9 @@
           }
         }
         .interestPercentage {
+          display: flex;
+          justify-content: center;
+          align-items: center;
           width: 141px;
           height: 34px;
           border-radius: 0.2857rem;
@@ -245,6 +259,10 @@
           padding: 6px 4px;
           text-align: center;
           font-weight: bold;
+          .cryptoImg {
+            margin-right: 3px;
+            @include cryptoImg;
+          }
           .nownArrow {
             width: 13px;
             margin: 0 5px;
@@ -256,7 +274,7 @@
 
   .investBtn {
     margin-top: 50px;
-    width: 483px;
+    width: 500px;
     height: 40px;
     background-image: linear-gradient(
       to bottom left,
@@ -271,7 +289,6 @@
     color: #fff;
     line-height: 40px;
     cursor: pointer;
-    &:hover {
-    }
+
   }
 }
