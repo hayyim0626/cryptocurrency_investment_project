@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
-import EthImg from "./Images/ehtereum_logo.svg";
-import DaiImg from "./Images/dai.png";
 import Status from "./Pages/Status/Status";
 import Apply from "./Pages/Apply/Apply";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { getEntireData } from "./Store/Actions";
 import "./App.scss";
 
@@ -12,28 +9,8 @@ function App() {
   const [clickDropdown, setClickDropdown] = useState(false);
   const [clickStatusDropdown, setClickStatusDropdown] = useState(false);
   const [clickedCurrency, setClickedCurrency] = useState("ETH");
-  const currencyApi = `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${clickedCurrency}&amount=10000&api-key=62be5285721a9c9c5ad2ac05a57650d93dde5060ddb06816f1f70e27fa67`;
   const dispatch = useDispatch();
-  const entireData = useSelector((store) => store.entireDataReducer);
-  console.log(entireData);
-  const CURRENCY_INFO = [
-    {
-      id: "ETH",
-      period: 1,
-      img: EthImg,
-      interestRate: entireData.interestRate,
-      investmentLimit: 3,
-      applicationPeriod: 30,
-    },
-    {
-      id: "DAI",
-      period: 2,
-      interestRate: entireData.interestRate,
-      img: DaiImg,
-      investmentLimit: 8,
-      applicationPeriod: 40,
-    },
-  ];
+  const currencyInfo = ["ETH", "DAI"];
 
   const handleDropdown = () => {
     setClickDropdown(!clickDropdown);
@@ -49,39 +26,43 @@ function App() {
   };
 
   const getApiData = async () => {
-    try {
-      const response = await axios.get(currencyApi);
-      const interestRate = Number(response.data.rates.Aave.lend.rate).toFixed(2);
-      const interestData = () => {
-        let arr = [];
-        for (let i = 1; i <= 29; i++) {
-          arr.push({
-            date: i,
-            interest: Number((Math.random() * 10 * interestRate).toFixed(2)),
-          });
-        }
-        arr.push({ date: 30, interest: interestRate });
-        return arr;
-      };
-      const apiCurrencyData = {
-        id: response.data.token.name,
-        interestRate,
-        monthlyData: interestData(),
-      };
-      dispatch(getEntireData(apiCurrencyData));
-    } catch (error) {
-      console.log(error);
+    const currencyData = [];
+    for (let i = 0; i <= currencyInfo.length - 1; i++) {
+      await fetch(
+        `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${currencyInfo[i]}&amount=10000&api-key=a95a9bc66477156985b917415c00e26730a0bf609e5b6da736fb0c67ccc2`
+      )
+        .then((res) => res.json())
+        .then((res) => {
+          const interestRate = Number(res.rates.Aave.lend.rate.toFixed(2));
+          const interestData = () => {
+            let arr = [];
+            for (let i = 1; i <= 29; i++) {
+              arr.push({
+                date: i,
+                interest: Number(
+                  (Math.random() * 5 * interestRate).toFixed(2)
+                ),
+              });
+            }
+            arr.push({ date: 30, interest: interestRate });
+            return arr;
+          };
+          currencyData[i] = {
+            id: res?.token.name,
+            interestRate,
+            period: Math.floor(Math.random() * 10) + 1,
+            investmentLimit: Math.floor(Math.random() * 10) + 1,
+            applicationPeriod: 30,
+            monthlyData: interestData(),
+          };
+        });
     }
+    dispatch(getEntireData(currencyData));
   };
 
-  // useEffect(() => {
-  //   getApiData();
-  // }, []);
-
-  // useEffect(() => {
-  //   getApiData();
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [clickedCurrency]);
+  useEffect(() => {
+    getApiData();
+  }, []);
 
   return (
     <div className="App" onClick={() => closeDropdown()}>
@@ -92,7 +73,6 @@ function App() {
           clickDropdown={clickDropdown}
           clickedCurrency={clickedCurrency}
           setClickedCurrency={setClickedCurrency}
-          CURRENCY_INFO={CURRENCY_INFO}
         />
         <Status
           clickStatusDropdown={clickStatusDropdown}

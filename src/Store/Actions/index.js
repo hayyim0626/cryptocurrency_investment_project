@@ -11,3 +11,10 @@ export const getEntireData = (data) => {
     payload: data,
   };
 };
+
+export const addEntireData = (data) => {
+  return {
+    type: "ADD_ENTIRE_DATA",
+    payload: data,
+  };
+};

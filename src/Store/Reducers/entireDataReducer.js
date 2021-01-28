@@ -1,12 +1,12 @@
-const entireDataReudcer = (state = INITIAL_STATE, action) => {
+const entireDataReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case "GET_ENTIRE_DATA":
-      return action.payload;
+      return [...action.payload];
     default:
       return state;
   }
 };
 
-export default entireDataReudcer;
+export default entireDataReducer;
 
 const INITIAL_STATE = [];

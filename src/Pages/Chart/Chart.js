@@ -2,9 +2,11 @@ import React from "react";
 import { Line } from "react-chartjs-2";
 import { useSelector } from "react-redux";
 
-export default function Chart() {
+export default function Chart({ clickedCurrency }) {
   const interestData = useSelector((store) => store.entireDataReducer);
-
+  console.log(clickedCurrency)
+  console.log(interestData)
+  console.log()
   const options = {
     legend: {
       display: true,
@@ -31,8 +33,7 @@ export default function Chart() {
   };
 
   const data = {
-    // labels: interestData.monthlyData.map((el) => el.date),
-    labels: [1, 2, 3, 4, 5, 6, 7, 8, 9, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    labels: interestData.find(el => el.id === clickedCurrency)?.monthlyData.map(el=> el.date),
     datasets: [
       {
         label: "Aave",
@@ -50,38 +51,7 @@ export default function Chart() {
         pointHoverBorderWidth: 1,
         pointRadius: 2,
         pointHitRadius: 1,
-        // data: interestData.monthlyData.map((el) => el.interest),
-        data: [
-          3,
-          4,
-          7,
-          5,
-          5,
-          8,
-          2,
-          5,
-          3,
-          5,
-          7,
-          7,
-          3,
-          4,
-          1,
-          2,
-          3,
-          4,
-          5,
-          7,
-          8,
-          3,
-          3,
-          4,
-          5,
-          7,
-          8,
-          6,
-          4,
-        ],
+        data: interestData.find(el => el.id === clickedCurrency)?.monthlyData.map(el=> el.interest),
       },
     ],
   };

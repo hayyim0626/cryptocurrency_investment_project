@@ -8,16 +8,16 @@ export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
   const [currentStatus, setCurrentStatus] = useState("전체");
   const investList = useSelector((store) => store.investReducer);
 
-  const filterStatus = (status) => {
-    setCurrentStatus(status);
-  };
+  // const filterStatus = (status) => {
+  //   setCurrentStatus(status);
+  // };
 
-  const filterByCurrency = (el) => {
-    if (el === "All") {
-      return investList;
-    }
-    investList.filter(el === investList.productName);
-  };
+  // const filterByCurrency = (el) => {
+  //   if (el === "All") {
+  //     return investList;
+  //   }
+  //   investList.filter(el === investList.productName);
+  // };
 
   return (
     <div className="Status">
@@ -39,7 +39,7 @@ export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
               className={
                 currentStatus === el ? "statusList currentStatus" : "statusList"
               }
-              onClick={() => filterStatus(el)}
+              // onClick={() => filterStatus(el)}
             >
               {el}
             </div>
@@ -49,7 +49,9 @@ export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
       <div className="currencyBox">
         {CURRENCY_ITEM.map((el) => {
           return (
-            <div className="currencyItem" onClick={() => filterByCurrency(el)}>
+            <div className="currencyItem" 
+            // onClick={() => filterByCurrency(el)}
+            >
               {el}
             </div>
           );
