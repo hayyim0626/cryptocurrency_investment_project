@@ -9,7 +9,7 @@ import increase from "../../Images/increase.svg";
 import money from "../../Images/money.svg";
 import year from "../../Images/year.svg";
 import nownArrow from "../../Images/noun_Arrow_2.svg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addInvest } from "../../Store/Actions";
 import Chart from "../Chart/Chart";
 import "./Apply.scss";
@@ -19,31 +19,22 @@ export default function Apply({
   clickDropdown,
   clickedCurrency,
   setClickedCurrency,
-  CURRENCY_INFO,
 }) {
   const dispatch = useDispatch();
   const [chartClicked, setChartClicked] = useState(true);
   const [detailDescription, setDetailDescription] = useState(false);
   const [investPrice, setInvestPrice] = useState("");
-  const clickedCurrencyData = CURRENCY_INFO.filter(
+  const entireData = useSelector((store) => store.entireDataReducer);
+  const clickedCurrencyData = entireData.find(
     (el) => el.id === clickedCurrency
-  )[0];
+  );
   const dailyInterestAmount = parseFloat(
-    ((investPrice * clickedCurrencyData.interestRate) / 100 / 365).toFixed(8)
+    ((investPrice * (clickedCurrencyData?.interestRate / 100)) / 365).toFixed(8)
   );
   const entireInterestAmount = parseFloat(
-    (dailyInterestAmount * clickedCurrencyData.period * 30).toFixed(8)
+    (dailyInterestAmount * clickedCurrencyData?.period * 30).toFixed(8)
   );
-  // const dailyInterestAmount = parseFloat(
-  //   ((investPrice * 0.026) / 365).toFixed(8)
-  // );
-
-  // const entireInterestAmount = parseFloat(
-  //   (dailyInterestAmount * 2 * 30).toFixed(8)
-  // );
-
   const date = new Date();
-
   const getFormatDate = (date) => {
     let year = date.getFullYear();
     let month = 1 + date.getMonth();
@@ -57,8 +48,7 @@ export default function Apply({
   const investData = {
     productName: "최고이자율상품",
     applicationDate: applyDate,
-    // interestRate: "0.26",
-    interestRate: clickedCurrencyData.interestRate,
+    interestRate: clickedCurrencyData?.interestRate,
     applicationRevenue: entireInterestAmount,
     applicationCurrency: clickedCurrency,
     applicationPrice: investPrice,
@@ -66,7 +56,7 @@ export default function Apply({
   };
 
   const isValid = () => {
-    if (investPrice > Number(clickedCurrencyData.investmentLimit)) {
+    if (investPrice > Number(clickedCurrencyData?.investmentLimit)) {
       return `최대 ${clickedCurrencyData.investmentLimit}까지 신청할 수 있습니다`;
     }
   };
@@ -93,10 +83,8 @@ export default function Apply({
     if (investPrice === "" || investPrice === "0") {
       return 0;
     }
-    // return 0.26;
     return clickedCurrencyData.interestRate;
   };
-
   const addInvestData = () => {
     if (
       isNaN(dailyInterestAmount) ||
@@ -136,14 +124,14 @@ export default function Apply({
         ▼ 이자율 비교 차트 (직전 1개월 기준)
       </div>
       <article className={chartClicked ? "chart isClicked" : "chart"}>
-        <Chart />
+        <Chart clickedCurrency={clickedCurrency}/>
       </article>
       <article className="descriptionBox">
         <div className="descriptionList">
           <div className="descriptionTitleAndData">
             <h4 className="descriptionType">기간</h4>
             <span className="currencyData">
-              {clickedCurrencyData.period}개월 락업
+              {clickedCurrencyData?.period}개월 락업
             </span>
           </div>
           <img src={bigLockup} alt="lockup icon" className="descriptionIcon" />
@@ -153,8 +141,7 @@ export default function Apply({
             <h4 className="descriptionType">이자</h4>
             <span className="currencyData">
               <span className="interestRate">
-                {clickedCurrencyData.interestRate}
-                {/* 0.26 */}
+                {clickedCurrencyData?.interestRate}
               </span>
               % 변동금리
             </span>
@@ -169,13 +156,9 @@ export default function Apply({
           <div className="descriptionTitleAndData">
             <h4 className="descriptionType">투자한도</h4>
             <div className="investmentLimit">
-              <img
-                src={clickedCurrencyData.img}
-                alt="crypto img"
-                className="cryptoImg"
-              />
+              <span className="currencyId">{clickedCurrencyData?.id}</span>
               <span className="currencyData">
-                {clickedCurrencyData.investmentLimit}
+                {clickedCurrencyData?.investmentLimit}
               </span>
             </div>
           </div>
@@ -189,7 +172,11 @@ export default function Apply({
           <div className="descriptionTitleAndData">
             <h4 className="descriptionType">남은 신청기간</h4>
             <span className="currencyData">
-              D-{clickedCurrencyData.applicationPeriod}
+              D-
+              {
+                entireData.find((el) => el.id === clickedCurrency)
+                  ?.applicationPeriod
+              }
             </span>
           </div>
           <img
@@ -240,8 +227,9 @@ export default function Apply({
           clickDropdown ? "currencyDropdown isClicked" : "currencyDropdown"
         }
       >
-        {CURRENCY_INFO.filter((el) => clickedCurrency !== el.id).map(
-          (el, idx) => (
+        {entireData
+          .filter((el) => clickedCurrency !== el.id)
+          .map((el, idx) => (
             <div
               className="currencyItem"
               onClick={() => handleCurrency(el.id)}
@@ -249,8 +237,7 @@ export default function Apply({
             >
               {el.id}
             </div>
-          )
-        )}
+          ))}
       </span>
       <article className="investOption">
         <div className="investOptionText">
@@ -271,11 +258,6 @@ export default function Apply({
               </div>
             </div>
             <div className="interestPercentage">
-              <img
-                src={clickedCurrencyData.img}
-                alt="crypto Img"
-                className="cryptoImg"
-              />
               {investPrice === "" || investPrice === "0"
                 ? "0"
                 : dailyInterestAmount}
@@ -290,11 +272,6 @@ export default function Apply({
               </div>
             </div>
             <div className="interestPercentage">
-              <img
-                src={clickedCurrencyData.img}
-                alt="crypto Img"
-                className="cryptoImg"
-              />
               {investPrice === "" || investPrice === "0"
                 ? "0"
                 : entireInterestAmount}

@@ -73,8 +73,8 @@
           font-weight: bold;
           margin-bottom: 15px;
         }
-        .cryptoImg {
-          @include cryptoImg;
+        .currencyId {
+          font-weight: bold;
         }
         .currencyData {
           color: #061d64;
@@ -175,7 +175,7 @@
 
   .currencyDropdown {
     display: none;
-    width: 169px;
+    width: 175px;
     background-color: #03103bf2;
     margin-top: 2px;
     padding: 8px 0;
