@@ -4,27 +4,31 @@ import DaiImg from "./Images/dai.png";
 import Status from "./Pages/Status/Status";
 import Apply from "./Pages/Apply/Apply";
 import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getEntireData } from "./Store/Actions";
 import "./App.scss";
 
 function App() {
   const [clickDropdown, setClickDropdown] = useState(false);
   const [clickStatusDropdown, setClickStatusDropdown] = useState(false);
   const [clickedCurrency, setClickedCurrency] = useState("ETH");
-  const [currencyData, setCurrnecyData] = useState([]);
   const currencyApi = `https://data-api.defipulse.com/api/v1/defipulse/api/GetRates?token=${clickedCurrency}&amount=10000&api-key=62be5285721a9c9c5ad2ac05a57650d93dde5060ddb06816f1f70e27fa67`;
+  const dispatch = useDispatch();
+  const entireData = useSelector((store) => store.entireDataReducer);
+  console.log(entireData);
   const CURRENCY_INFO = [
     {
       id: "ETH",
       period: 1,
       img: EthImg,
-      interestRate: currencyData.interestRate,
+      interestRate: entireData.interestRate,
       investmentLimit: 3,
       applicationPeriod: 30,
     },
     {
       id: "DAI",
       period: 2,
-      interestRate: currencyData.interestRate,
+      interestRate: entireData.interestRate,
       img: DaiImg,
       investmentLimit: 8,
       applicationPeriod: 40,
@@ -47,11 +51,24 @@ function App() {
   const getApiData = async () => {
     try {
       const response = await axios.get(currencyApi);
+      const interestRate = Number(response.data.rates.Aave.lend.rate).toFixed(2);
+      const interestData = () => {
+        let arr = [];
+        for (let i = 1; i <= 29; i++) {
+          arr.push({
+            date: i,
+            interest: Number((Math.random() * 10 * interestRate).toFixed(2)),
+          });
+        }
+        arr.push({ date: 30, interest: interestRate });
+        return arr;
+      };
       const apiCurrencyData = {
         id: response.data.token.name,
-        interestRate: Number(response.data.rates.Aave.lend.rate).toFixed(2),
+        interestRate,
+        monthlyData: interestData(),
       };
-      setCurrnecyData(apiCurrencyData);
+      dispatch(getEntireData(apiCurrencyData));
     } catch (error) {
       console.log(error);
     }

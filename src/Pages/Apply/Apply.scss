@@ -45,10 +45,7 @@
     cursor: pointer;
   }
   .chart {
-    width: 500px;
-    height: 230px;
     margin-top: 15px;
-    border: 1px solid black;
     display: none;
     &.isClicked {
       display: block;
@@ -289,6 +286,5 @@
     color: #fff;
     line-height: 40px;
     cursor: pointer;
-
   }
 }

@@ -11,6 +11,7 @@ import year from "../../Images/year.svg";
 import nownArrow from "../../Images/noun_Arrow_2.svg";
 import { useDispatch } from "react-redux";
 import { addInvest } from "../../Store/Actions";
+import Chart from "../Chart/Chart";
 import "./Apply.scss";
 
 export default function Apply({
@@ -27,10 +28,20 @@ export default function Apply({
   const clickedCurrencyData = CURRENCY_INFO.filter(
     (el) => el.id === clickedCurrency
   )[0];
-  // const dailyInterestAmount = ((investPrice * clickedCurrencyData.interestRate/100) / 365).toFixed(8);
-  // const entireInterestAmount = (dailyInterestAmount * clickedCurrencyData.period * 30).toFixed(8);
-  const dailyInterestAmount = parseFloat(((investPrice * 0.026) / 365).toFixed(8));
-  const entireInterestAmount = parseFloat((dailyInterestAmount * 2 * 30).toFixed(8));
+  const dailyInterestAmount = parseFloat(
+    ((investPrice * clickedCurrencyData.interestRate) / 100 / 365).toFixed(8)
+  );
+  const entireInterestAmount = parseFloat(
+    (dailyInterestAmount * clickedCurrencyData.period * 30).toFixed(8)
+  );
+  // const dailyInterestAmount = parseFloat(
+  //   ((investPrice * 0.026) / 365).toFixed(8)
+  // );
+
+  // const entireInterestAmount = parseFloat(
+  //   (dailyInterestAmount * 2 * 30).toFixed(8)
+  // );
+
   const date = new Date();
 
   const getFormatDate = (date) => {
@@ -46,8 +57,8 @@ export default function Apply({
   const investData = {
     productName: "최고이자율상품",
     applicationDate: applyDate,
-    interestRate: "0.26",
-    // interestRate: clickedCurrencyData.interestRate,
+    // interestRate: "0.26",
+    interestRate: clickedCurrencyData.interestRate,
     applicationRevenue: entireInterestAmount,
     applicationCurrency: clickedCurrency,
     applicationPrice: investPrice,
@@ -75,23 +86,28 @@ export default function Apply({
   const handleCurrency = (currencyId) => {
     setClickedCurrency(currencyId);
   };
-
   const averageInterest = () => {
-    if (dailyInterestAmount === "NaN") {
+    if (isNaN(dailyInterestAmount)) {
       return "NaN";
     }
     if (investPrice === "" || investPrice === "0") {
       return 0;
     }
-    return 0.26;
-    // return clickedCurrencyData.interestRate
+    // return 0.26;
+    return clickedCurrencyData.interestRate;
   };
 
   const addInvestData = () => {
-    if (dailyInterestAmount === "NaN" || investPrice === "0") {
+    if (
+      isNaN(dailyInterestAmount) ||
+      investPrice === "0" ||
+      investPrice === ""
+    ) {
+      setInvestPrice("");
       return alert("유효한 숫자를 입력해주세요!");
     }
     if (investPrice > Number(clickedCurrencyData.investmentLimit)) {
+      setInvestPrice("");
       return alert(
         `최대 ${clickedCurrencyData.investmentLimit}까지 신청할 수 있습니다`
       );
@@ -120,7 +136,7 @@ export default function Apply({
         ▼ 이자율 비교 차트 (직전 1개월 기준)
       </div>
       <article className={chartClicked ? "chart isClicked" : "chart"}>
-        차트부분
+        <Chart />
       </article>
       <article className="descriptionBox">
         <div className="descriptionList">
@@ -137,8 +153,8 @@ export default function Apply({
             <h4 className="descriptionType">이자</h4>
             <span className="currencyData">
               <span className="interestRate">
-                {/* {clickedCurrencyData.interestRate} */}
-                0.26
+                {clickedCurrencyData.interestRate}
+                {/* 0.26 */}
               </span>
               % 변동금리
             </span>
