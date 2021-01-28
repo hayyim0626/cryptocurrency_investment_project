@@ -15,7 +15,6 @@ export default function Status({ clickStatusDropdown, handleStatusDropdown }) {
   const filterByCurrency = (el) => {
     if (el === "All") {
       return investList;
-      console.log(el)
     }
     investList.filter(el === investList.productName);
   };
