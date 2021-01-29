@@ -39,16 +39,14 @@ function App() {
             for (let i = 1; i <= 29; i++) {
               arr.push({
                 date: i,
-                interest: Number(
-                  (Math.random() * 5 * interestRate).toFixed(2)
-                ),
+                interest: Number((Math.random() * 5 * interestRate).toFixed(2)),
               });
             }
             arr.push({ date: 30, interest: interestRate });
             return arr;
           };
           currencyData[i] = {
-            id: res?.token.name,
+            id: res.token.name,
             interestRate,
             period: Math.floor(Math.random() * 10) + 1,
             investmentLimit: Math.floor(Math.random() * 10) + 1,
