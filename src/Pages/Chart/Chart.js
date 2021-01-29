@@ -4,9 +4,7 @@ import { useSelector } from "react-redux";
 
 export default function Chart({ clickedCurrency }) {
   const interestData = useSelector((store) => store.entireDataReducer);
-  console.log(clickedCurrency)
-  console.log(interestData)
-  console.log()
+
   const options = {
     legend: {
       display: true,
@@ -33,7 +31,9 @@ export default function Chart({ clickedCurrency }) {
   };
 
   const data = {
-    labels: interestData.find(el => el.id === clickedCurrency)?.monthlyData.map(el=> el.date),
+    labels: interestData
+      .find((el) => el.id === clickedCurrency)
+      ?.monthlyData.map((el) => el.date),
     datasets: [
       {
         label: "Aave",
@@ -51,7 +51,9 @@ export default function Chart({ clickedCurrency }) {
         pointHoverBorderWidth: 1,
         pointRadius: 2,
         pointHitRadius: 1,
-        data: interestData.find(el => el.id === clickedCurrency)?.monthlyData.map(el=> el.interest),
+        data: interestData
+          .find((el) => el.id === clickedCurrency)
+          ?.monthlyData.map((el) => el.interest),
       },
     ],
   };
